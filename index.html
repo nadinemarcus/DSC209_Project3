@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  body { font-family: sans-serif; }
+  .line { fill: none; stroke-width: 2px; }
+  .axis-label { font-size: 12px; }
+  .tooltip { 
+    position: absolute; 
+    background-color: white; 
+    padding: 5px; 
+    border: 1px solid gray; 
+    pointer-events: none; 
+    font-size: 12px;
+  }
+</style>
+<body>
+<h2>GHG Emissions by Industry and Country</h2>
+<select id="country-select" multiple>
+  <!-- Options will be populated dynamically -->
+</select>
+<svg width="900" height="500"></svg>
+<div class="tooltip" style="opacity:0"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+const svg = d3.select("svg"),
+      margin = {top: 50, right: 150, bottom: 50, left: 60},
+      width = +svg.attr("width") - margin.left - margin.right,
+      height = +svg.attr("height") - margin.top - margin.bottom;
+
+const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+const x = d3.scaleLinear().range([0, width]);
+const y = d3.scaleLinear().range([height, 0]);
+const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+const xAxis = g.append("g").attr("transform", `translate(0,${height})`);
+const yAxis = g.append("g");
+
+const tooltip = d3.select(".tooltip");
+
+// Load CSV data
+d3.csv("ghg_emissions.csv").then(data => {
+
+  // Convert values
+  data.forEach(d => {
+    d.Year = +d.Year;
+    d.Emissions = +d.Emissions;
+  });
+
+  // Get unique countries and industries
+  const countries = Array.from(new Set(data.map(d => d.Country)));
+  const industries = Array.from(new Set(data.map(d => d.Industry)));
+
+  // Populate multi-select
+  const select = d3.select("#country-select");
+  select.selectAll("option")
+    .data(countries)
+    .enter()
+    .append("option")
+    .text(d => d)
+    .attr("value", d => d);
+
+  function update() {
+    const selectedCountries = Array.from(select.node().selectedOptions).map(d => d.value);
+    const filtered = data.filter(d => selectedCountries.includes(d.Country));
+
+    const nested = d3.groups(filtered, d => d.Country, d => d.Industry);
+
+    x.domain(d3.extent(data, d => d.Year));
+    y.domain([0, d3.max(filtered, d => d.Emissions)]);
+
+    xAxis.transition().call(d3.axisBottom(x).tickFormat(d3.format("d")));
+    yAxis.transition().call(d3.axisLeft(y));
+
+    // Bind data
+    const lines = g.selectAll(".line-group")
+      .data(nested, d => d[0]);  // key = Country
+
+    // EXIT
+    lines.exit().remove();
+
+    // ENTER
+    const linesEnter = lines.enter().append("g")
+      .attr("class", "line-group");
+
+    // Merge
+    const allLines = linesEnter.merge(lines);
+
+    // Draw industry lines for each country
+    allLines.each(function([country, industriesData]) {
+      const lineSel = d3.select(this).selectAll(".line").data(industriesData, d => d[0]);
+
+      lineSel.enter()
+        .append("path")
+        .attr("class", "line")
+        .merge(lineSel)
+        .transition()
+        .attr("d", d => d3.line()
+          .x(d => x(d.Year))
+          .y(d => y(d.Emissions))
+          (d[1])
+        )
+        .attr("stroke", d => color(d[0]));
+
+      lineSel.exit().remove();
+    });
+  }
+
+  select.on("change", update);
+  update();  // initial draw
+});
+</script>
+</body>
