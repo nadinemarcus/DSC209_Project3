@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; 
+}
+
+svg {
+  border: 1px solid #ccc;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 350px;
+}
+
+.country-list, .legend {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.country-list label, .legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.country-list input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.legend .swatch {
+  width: 16px;
+  height: 12px;
+  display: inline-block;
+}
+
+.legend li.selected {
+  font-weight: bold;
+}
