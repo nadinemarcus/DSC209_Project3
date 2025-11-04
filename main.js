@@ -12,6 +12,10 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 const xAxisG = g.append("g").attr("transform", `translate(0,${height})`);
 const yAxisG = g.append("g");
 
+const tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip");
+  
+
 g.append("text")
   .attr("class", "axis-label")
   .attr("x", width / 2).attr("y", height + 45)
@@ -113,6 +117,29 @@ d3.csv("ghg_emissions.csv").then(data => {
       .y(d => y(d.Emissions))
       .defined(d => !isNaN(d.Emissions));
 
+    function getClosestPoint(values, mouseX) {
+    // Convert pixel x → data year
+    const hoverYear = x.invert(mouseX);
+
+    // Find the point with the closest year
+    return values.reduce((closest, current) =>
+      Math.abs(current.Year - hoverYear) < Math.abs(closest.Year - hoverYear)
+        ? current : closest
+      );
+    }
+    let marker = g.selectAll(".marker").data([null]);
+
+      marker = marker.enter()
+        .append("circle")
+        .attr("class", "marker")
+        .attr("r", 5)
+        .style("fill", "white")
+        .style("stroke", "black")
+        .style("stroke-width", 1.5)
+        .style("pointer-events", "none")
+        .merge(marker)
+        .style("opacity", 0);
+
     const lines = g.selectAll(".line")
       .data(nested.flatMap(([country, industries]) =>
         industries.map(([industry, values]) => {
@@ -126,13 +153,42 @@ d3.csv("ghg_emissions.csv").then(data => {
     const linesEnter = lines.enter().append("path")
       .attr("class", "line")
       .style("fill", "none")
-      .style("stroke-width", 2.5);
+      .style("stroke-width", 2.5)
+      .on("mouseover", function(event, d) {
+        tooltip.style("opacity", 1);
+        d3.select(this).style("stroke-width", 4); // highlight
+          })
+      .on("mousemove", function(event, d) {
+        const [mouseX] = d3.pointer(event, g.node());
+        const closest = getClosestPoint(d.values, mouseX);
 
+        marker
+          .style("opacity", 1)
+          .attr("cx", x(closest.Year))
+          .attr("cy", y(closest.Emissions));
+
+        tooltip
+          .html(`
+            <strong>${d.country}</strong><br>
+            ${d.industry}<br>
+            <em>Year:</em> ${closest.Year}<br>
+            <em>Emissions:</em> ${closest.Emissions.toFixed(1)}
+          `)
+          .style("left", (event.pageX + 14) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      })
+
+
+  .on("mouseout", function() {
+    tooltip.style("opacity", 0);
+    marker.style("opacity", 0);
+    d3.select(this).style("stroke-width", 2.5); // restore
+  });
     linesEnter.merge(lines)
       .transition()
       .attr("stroke", d => color(d.industry))
       .attr("d", d => lineGenerator(d.values));
-  }
-
+  
+}
   update();
 });
