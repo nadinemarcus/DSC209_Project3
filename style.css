@@ -56,3 +56,5 @@ svg {
   transition: opacity 0.15s ease;
 }
 
+.axis.y2-axis path.domain, .axis.y2-axis line { opacity: 0.5; }
+.co2-line { opacity: 0.9; }

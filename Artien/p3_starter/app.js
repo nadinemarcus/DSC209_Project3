@@ -1,6 +1,6 @@
 // v4: adds background hover-capture to reset highlight/tooltip when cursor leaves bars or chart
 (async function() {
-  const width = 980, height = 540, margin = {top: 30, right: 10, bottom: 80, left: 64};
+  const width = 980, height = 540, margin = {top: 30, right: 90, bottom: 80, left: 64};
   const YEAR_MIN = 1995, YEAR_MAX = 2018;
 
   const [disasters, co2] = await Promise.all([
@@ -58,6 +58,30 @@
 
   const legendWrap = d3.select('#legend-items');
   const hiddenTypes = new Set();
+//Debbies Edit
+  // SECONDARY Y (CO₂) + layers
+  const y2 = d3.scaleLinear().range([innerH, 0]); // CO₂ axis
+  const y2AxisG = plot.append('g')
+    .attr('class', 'axis y2-axis')
+    .attr('transform', `translate(${innerW},0)`);
+
+  const co2LinePath = plot.append('path')
+    .attr('class', 'co2-line')
+    .attr('fill', 'none')
+    .attr('stroke', '#111')
+    .attr('stroke-width', 2)
+    .attr('pointer-events', 'none'); // don't block bar hovers
+
+  const co2DotsG = plot.append('g').attr('class', 'co2-dots');
+
+  // (optional) label for the right axis
+  plot.append('text')
+    .attr('class', 'y2-label')
+    .attr('x', innerW + 40)
+    .attr('y', -10)
+    .attr('text-anchor', 'end')
+    .text('CO₂ emissions (Mt)');
+
 
   function legendRender() {
     const items = legendWrap.selectAll('.legend-item').data(types, d => d);
@@ -139,7 +163,19 @@
 
     const years = data.map(d => d.year);
     x.domain(years);
-    y.domain([0, d3.max(data, d => d.total) || 1]).nice();
+    const maxDisasters = d3.max(data, d => d.total) || 1;
+    y.domain([0, maxDisasters * 1.30]).nice();   // adds ~15% headroom
+
+//debbies edit
+ // ---- NEW: CO2 series + secondary axis domain ----
+    const series = getCo2Series(currentGeo); 
+    y2.domain(d3.extent(series, d => d.val)).nice();// [{year, val}]
+    const co2Vals = series.map(d => d.val);
+    if (co2Vals.length) {
+      y2.domain(d3.extent(co2Vals)).nice();
+    } else {
+      y2.domain([0, 1]); // fallback
+    };
 
     const stack = d3.stack().keys(types);
     const stacked = stack(data);
@@ -207,7 +243,6 @@
     });
 
     // Hover highlight + tooltip
-    const series = getCo2Series(currentGeo);
     const co2Map = new Map(series.map(d => [d.year, d.val]));
 
     plot.selectAll('.year-group')
@@ -237,10 +272,38 @@
       .on('mouseleave', () => clearFocus());
 
     svg.on('mouseleave', () => clearFocus());
+    //Debbies edit 
+    // ---- NEW: CO2 line + dots ----
+    const lineGen = d3.line()
+      .x(d => x(d.year) + x.bandwidth() / 2)
+      .y(d => y2(d.val))
+      .curve(d3.curveMonotoneX); // nicer shape
+
+    co2LinePath
+      .datum(series)
+      .transition().duration(900)
+      .attr('d', lineGen);
+
+    const dots = co2DotsG.selectAll('circle').data(series, d => d.year);
+    dots.enter().append('circle')
+        .attr('r', 2.8)
+        .attr('fill', '#111')
+        .attr('cx', d => x(d.year) + x.bandwidth() / 2)
+        .attr('cy', d => y2(d.val))
+      .merge(dots)
+        .transition().duration(900)
+        .attr('cx', d => x(d.year) + x.bandwidth() / 2)
+        .attr('cy', d => y2(d.val));
+    dots.exit().remove();
+
+
 
     // Axes
     xAxisG.transition().duration(600).call(d3.axisBottom(x).tickValues(x.domain()));
     yAxisG.transition().duration(600).call(d3.axisLeft(y));
+    y2AxisG.transition().duration(600).call(d3.axisRight(y2).ticks(6)             // number of ticks.tickFormat(d3.format(".2s"))  // formatting (e.g., 20M → 20M, 1.2B → 1.2B)
+  );
+
 
     d3.select('#sort-asc').classed('btn-on', sortMode === 'asc');
     d3.select('#sort-desc').classed('btn-on', sortMode === 'desc');
