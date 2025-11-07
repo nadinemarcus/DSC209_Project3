@@ -1,0 +1,14 @@
+{
+  "top5_countries": [
+    "United States",
+    "China, P.R.: Mainland",
+    "India",
+    "Philippines",
+    "Indonesia"
+  ],
+  "years_disasters_min": 1980,
+  "years_disasters_max": 2024,
+  "years_co2_min": 1995,
+  "years_co2_max": 2021,
+  "note": "CO2 series is 'CO2 Emissions Embodied in Production' (Mt). Disasters exclude 'TOTAL' type. Global is the sum across included countries for each year (for CO2) and all countries (for disasters)."
+}

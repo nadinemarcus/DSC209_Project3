@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Climate-related Disasters vs CO₂ Emissions (Production)</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+  <header>
+    <h1>Climate-related Disasters vs CO₂ Emissions (Production)</h1>
+    <p class="caption">
+      Stacked annual disaster counts (by type). Tooltip shows CO₂ embodied in production (Mt).
+      Scope: Global or a top-5 country. Toggle legend checkboxes to filter types.
+    </p>
+  </header>
+
+  <section class="controls">
+    <label for="geo-select">Scope:</label>
+    <select id="geo-select"></select>
+
+    <div class="sort-group">
+      <button id="sort-asc" aria-pressed="false">Sort: Total ↑</button>
+      <button id="sort-desc" aria-pressed="true">Sort: Total ↓</button>
+      <button id="sort-year" aria-pressed="false">Sort: Year</button>
+    </div>
+  </section>
+
+  <section class="layout">
+    <div id="chart"></div>
+    <aside id="legend" class="legend-panel">
+      <div class="legend-title">Disaster types</div>
+      <div id="legend-items" class="legend"></div>
+      <div class="legend-instruction">Tip: Use the checkboxes or click labels to hide/show types.</div>
+    </aside>
+  </section>
+
+  <!-- Tooltip attached to BODY for reliable positioning -->
+  <div id="tooltip" class="tooltip" style="opacity:0;"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
