@@ -18,6 +18,12 @@
   const plot = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
   const innerW = width - margin.left - margin.right;
   const innerH = height - margin.top - margin.bottom;
+  const defs = svg.append('defs');
+
+  defs.append("filter")
+    .attr("id", "shadow-blur")
+    .append("feGaussianBlur")
+    .attr("stdDeviation", 3); // increase to make glow softer
 
   // Background capture rect to clear focus when not hovering bars
   const hoverBG = plot.append('rect')
@@ -65,11 +71,24 @@
     .attr('class', 'axis y2-axis')
     .attr('transform', `translate(${innerW},0)`);
 
+  const co2LineShadow = plot.append('path')
+    .attr('class', 'co2-line-shadow')
+    .attr('fill', 'none')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 13)      // thicker than main line
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('filter', 'url(#shadow-blur)')
+    .attr('opacity', 0.9);
+
   const co2LinePath = plot.append('path')
     .attr('class', 'co2-line')
     .attr('fill', 'none')
     .attr('stroke', '#4f4f4fff')
-    .attr('stroke-width', 2)
+    .attr('stroke-width', 2.5)
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round');
+
     //.attr('pointer-events', 'none'); // don't block bar hovers
 
   const co2DotsG = plot.append('g').attr('class', 'co2-dots');
@@ -279,6 +298,10 @@
       .y(d => y2(d.val))
       .curve(d3.curveMonotoneX); // nicer shape
 
+    co2LineShadow
+      .datum(series)
+      .transition().duration(900)
+      .attr('d', lineGen);
     co2LinePath
       .datum(series)
       .transition().duration(900)
@@ -305,6 +328,7 @@
   );
 
 // Ensure CO₂ line and dots stay on top
+co2LineShadow.raise();
 co2LinePath.raise();
 co2DotsG.raise();
 y2AxisG.raise();

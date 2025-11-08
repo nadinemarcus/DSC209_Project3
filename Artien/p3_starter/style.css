@@ -57,3 +57,7 @@ button:focus{outline:2px solid #bcd;}
 .year-group.dim{opacity:.22;}
 
 .tooltip .sparkline-title{margin-top:6px;font-size:11px;color:#555;}
+
+.co2-line-shadow {
+  opacity: 0.45;
+}
