@@ -304,6 +304,10 @@
     y2AxisG.transition().duration(600).call(d3.axisRight(y2).ticks(6)             // number of ticks.tickFormat(d3.format(".2s"))  // formatting (e.g., 20M → 20M, 1.2B → 1.2B)
   );
 
+// Ensure CO₂ line and dots stay on top
+co2LinePath.raise();
+co2DotsG.raise();
+y2AxisG.raise();
 
     d3.select('#sort-asc').classed('btn-on', sortMode === 'asc');
     d3.select('#sort-desc').classed('btn-on', sortMode === 'desc');
