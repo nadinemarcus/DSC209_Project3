@@ -52,25 +52,63 @@
   <script src="app.js"></script>
   <h2>Exploring the Relationship Between Emissions and Climate Disaster Frequency</h2>
   <h3>Motivation</h3>
-  <p>The visualization helps the veiwer explore how long-term climate shifts relate to short-term disasters.
+  <p>The visualization helps the viewer explore how long-term climate shifts relate to short-term disasters.
      Presenting these datasets together allows us to see if patterns that are not visible when each is viewed individually, 
      without suggesting a direct relationship. </p>
   <h3>Design Rationale</h3>
-  <p>We use a stacked bar chart to show the total number of disasters per year while also revealing how different disaster types 
-    contribute to that total. A line chart is overlaid using a secondary y-axis to show CO₂ emissions, providing a continuous trend for comparison. 
+  <p>
+    The objective of the visualization was to reveal a possible relationship between global CO₂ emissions and the frequency of climate-related disasters over time. 
+    The visualiaztion utilizes a stacked bar chart to display the total number of disasters per year, while also showing the proportion of different disaster types. 
+  A line chart is overlaid using a secondary y-axis to show CO₂ emissions, providing a continuous trend for comparison. 
     Disaster types have a distinct categorical color palette, while the CO₂ line is styled in a neutral charcoal with a light shadow so it remains 
     legible across bars. 
-    Interactive controls like region selection, sorting, and disaster-type filtering aid in the exploratory analysis.</p>
+    Interactive controls like region selection, sorting, and disaster-type filtering aid in the exploratory analysis. More specifically, users can filter for specific disaster types, such as drought, extreme temperature, flood, landslide, storm, and wildfire.
+    The tooltip reveals contexual information of the given year, such as total CO₂ emissions and disasters, change from previous year, and its position along the emissions trendline.
+  The scope of the visualization can be switched from global to one of these countries: United States, China, the Phillipines, India, and Indonesia, which have the highest numbers of recorded climate disasters.
+Overall, the design allows users to explore long-term CO₂ emission trends and the variability of climate-related diasters.   </p>
   <h3>Data Transformations</h3>
-  <p></p>
+  <p> We obtained the data from the International Monetary Fund and combined the "Climate-related natural disasters" dataset with the OCED/IMF CO₂ embodied in the production series.
+    To align timelines, the data was restricted to 1995-2018. For each year, we calculated the summed diasters counts by type (Flood, Storm, Drought, Extreme temperature, Wildfire, and Landslide) and totals across all types. The "TOTAL" category was to avoid double-counting, and global totals were derived by adding all countries' value per year.
+     Tooltip CO₂ values came from the production series, with missing years displayed as N/A. 
+    The legend checkboxes allow filter by disaster type, while sorting toggles reorder years by Total↑/Total↓ or to reset to chronological order.
+  Data processing included merging multiple datasets, computing CO₂ changes, and normalizing values for dual-axis readability and comparison. </p>
   <h3>Development Process</h3>
-  <p>The development process was shaped by each member’s availability, but our group maintained consistent communication and collaboration throughout. We held ongoing discussions about the project topic, visualization design, desired interactivity, and ways to improve usability and aesthetics.
+  <p>
+  The development process was shaped by each member’s availability, but our group maintained consistent communication and collaboration throughout. We held ongoing discussions about the project topic, visualization design, desired interactivity, and ways to improve usability and aesthetics.
+  Nadine set up the GitHub repository and Discord server for coordination, as well as the initial site structure and base styling.  </p>
 
-Nadine set up the GitHub repository and Discord server for coordination, as well as the initial site structure and base styling. Artien, Debby, and Paige refined the project’s analytical direction, shaping the data strategy and graph intention as development progressed. Artien provided the cleaned and filtered dataset, improved the HTML and JavaScript code, and assembled the first working version of the site that includes the data selected.
+  <p>
+    The visualization was built in <strong>D3.js</strong> through an iterative process:
+  </p>
+<p>
+  <ol>
+  <li>
+    <strong>Exploration:</strong> The majority of the time was dedicated to exploring the data, 
+    assessing data quality, and determining how to best present it. 
+    Before beginning the visualization process, it was essential to understand the data - what it represents, which insights are most relevant, and the story it conveys. 
+     We aimed to understand possible relationships and figure out the domain and coverage of our visualization. 
+  </li>
+  <li>
+    <strong>Prototyping:</strong> Brainstormed and tested various layouts. We selected a stacked bar and dual-axis line chart for clarity and balance.
+  </li>
+  <li>
+    <strong>Implementation:</strong> Artien provided the cleaned and filtered dataset, improved the HTML and JavaScript code, and assembled the first working version of the site that includes the data selected.
+    
+  </li>
+  <li>
+    <strong>Refinement:</strong> Artien, Debby, and Paige refined the project’s analytical direction, shaping the data strategy and graph intention as development progressed. 
+  </li>
+  <li>
+    <strong>Insights:</strong> Although CO₂ emissions exhbibit consistent growth, disaster counts flunctuate annually. This suggests that disasters could be shaped by other ecological and local conditions. 
+  </li>
+</ol>
+</section>
+  
+  
 
-Debby, Nadine, and Paige contributed enhancements to the graph’s interactivity and visual design, adjusted styling for clarity and cohesion, and collaborated on the final write-up. Overall, our group maintained an open, iterative workflow and supported one another through active discussion and feedback at every stage of the project. 
+Overall, the collective time spent was around 12 hours. 
 
-Overall, the collective time</p>
+ </p>
   <h3>Conclusion</h3>
   <p>Although CO₂ emissions show a steady long-term increase, climate-related disaster counts vary significantly from year to year, 
     and do not directly track changes in emissions on an annual basis. 
