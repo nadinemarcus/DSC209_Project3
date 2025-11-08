@@ -4,8 +4,8 @@
   const YEAR_MIN = 1995, YEAR_MAX = 2018;
 
   const [disasters, co2] = await Promise.all([
-    fetch('../disasters_prepped.json').then(r => r.json()),
-    fetch('../co2_prepped.json').then(r => r.json())
+    fetch('./disasters_prepped.json').then(r => r.json()),
+    fetch('./co2_prepped.json').then(r => r.json())
   ]);
 
   const tooltip = d3.select('#tooltip');
