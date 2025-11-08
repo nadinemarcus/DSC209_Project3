@@ -18,7 +18,7 @@ button.btn-on{font-weight:700;text-decoration:underline;background:#eef1f6;}
 button:focus{outline:2px solid #bcd;}
 
 .layout{display:flex;gap:20px;align-items:flex-start;}
-#chart{position:relative;}
+#chart{position:relative; display: flex;}
 
 .legend-panel{min-width:240px;max-width:260px;border:1px solid var(--border);border-radius:10px;padding:10px;background:#fafbfc;position:sticky;top:16px;}
 .legend-title{font-weight:700;margin-bottom:6px;}
