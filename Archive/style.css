@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; 
+}
+
+svg {
+  border: 1px solid #ccc;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 350px;
+}
+
+.country-list, .legend {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.country-list label, .legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.country-list input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.legend .swatch {
+  width: 16px;
+  height: 12px;
+  display: inline-block;
+}
+
+.legend li.selected {
+  font-weight: bold;
+}
+
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  font-size: 13px;
+  pointer-events: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.axis.y2-axis path.domain, .axis.y2-axis line { opacity: 0.5; }
+.co2-line { opacity: 0.9; }

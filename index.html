@@ -1,131 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>GHG Emissions by Industry and Country</title>
-  <link rel="stylesheet" href="../style.css" />
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 20px;
-      background: #fafafa;
-      color: #333;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    select {
-      display: block;
-      margin: 0 auto 20px auto;
-      width: 320px;
-      height: 140px;
-      font-size: 14px;
-      border-radius: 8px;
-      border: 1.5px solid #ccc;
-      padding: 6px 10px;
-      background: #fff;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-      transition: border-color 0.3s ease;
-      cursor: pointer;
-    }
-
-    select:focus {
-      outline: none;
-      border-color: #007ACC;
-      box-shadow: 0 0 5px #007ACC;
-    }
-
-    /* Legend container */
-    .legend {
-      max-width: 320px;
-      margin: 0 auto 30px auto;
-      padding-left: 0;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      --justify-content: right;
-      gap: 10px;
-      font-size: 14px;
-      user-select: none;
-    }
-
-    .legend li {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 5px 10px;
-      border-radius: 6px;
-      border: 1.5px solid transparent;
-    }
-
-    .legend li.selected {
-      border-color: currentColor;
-      background-color: rgba(0, 122, 204, 0.1);
-    }
-
-    .legend li:hover {
-      background-color: rgba(0, 122, 204, 0.15);
-    }
-
-    .legend .swatch {
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      margin-right: 8px;
-      flex-shrink: 0;
-      border: 1px solid #ddd;
-    }
-
-    svg {
-      background: white;
-      border: 1px solid #ddd;
-      box-shadow: 0 0 10px #ccc;
-    }
-    .line {
-      fill: none;
-      stroke-width: 2.5px;
-    }
-    .axis-label {
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .tooltip {
-      position: absolute;
-      background-color: white;
-      padding: 8px 10px;
-      border: 1px solid #888;
-      border-radius: 4px;
-      pointer-events: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      font-size: 13px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Climate-related Disasters vs CO₂ Emissions (Production)</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background: #fafafa;
+    color: #333;
+  }
+  h1, h2 {
+    text-align: center;
+  }
+</style>
 <body>
-  <h2>GHG Emissions by Industry and Country (2010–2023)</h2>
+  <header>
+    <h1>Global Climate Disasters and CO₂ Emissions, 1995–2018</h1>
+    <p class="caption">Annual climate disaster counts by type (stacked bars) alongside CO₂ emissions trends (line) for the selected region from 1995–2018, with controls to filter disaster types and change regions. 
+    </p>
+  </header>
 
-  
-  <div class="container">
-    <svg width="1000" height="650"></svg>
-    <div class="controls">
-      <div class="country-list-container">
-        <h3>Countries</h3>
-        <div class="country-list"></div>
-      </div>
-      <div class="legend-container">
-        <h3>Industries</h3>
-        <ul class="legend"></ul>
-      </div>
+  <section class="controls">
+    <label for="geo-select">Scope:</label>
+    <select id="geo-select"></select>
+
+    <div class="sort-group">
+      <button id="sort-asc" aria-pressed="false">Sort: Total ↑</button>
+      <button id="sort-desc" aria-pressed="true">Sort: Total ↓</button>
+      <button id="sort-year" aria-pressed="false">Sort: Year</button>
     </div>
-  </div>
+  </section>
 
+  <section class="layout">
+    <div id="chart"></div>
+    <aside id="legend" class="legend-panel">
+      <div class="legend-title">Disaster types</div>
+      <div id="legend-items" class="legend"></div>
+      <div class="legend-instruction">Tip: Use the checkboxes or click labels to hide/show types.</div>
+    </aside>
+  </section>
 
-  <div class="tooltip"></div>
-  <ul class="legend"></ul>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="main.js"></script> 
+  <!-- Tooltip attached to BODY for reliable positioning -->
+  <div id="tooltip" class="tooltip" style="opacity:0;"></div>
+
+  <script src="app.js"></script>
 </body>
 </html>
