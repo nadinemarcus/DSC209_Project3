@@ -9,7 +9,7 @@
 *{box-sizing:border-box;}
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;margin:24px;color:var(--fg);background:var(--bg);}
 header h1{margin:0 0 6px 0;font-weight:800;font-size:2rem;letter-spacing:.2px;}
-.caption{margin:0 0 16px 0;color:#555;max-width:980px;}
+.caption{margin:0 0 16px 0;color:#555;max-width:980px; text-align: center;}
 
 .controls{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
 .sort-group{display:flex;gap:8px;flex-wrap:wrap;}
