@@ -17,6 +17,7 @@
   h1, h2 {
     text-align: center;
   }
+  h3 {font-style: normal;}
 </style>
 <body>
   <header>
@@ -51,12 +52,23 @@
   <script src="app.js"></script>
   <h2>Exploring the Relationship Between Emissions and Climate Disaster Frequency</h2>
   <h3>Motivation</h3>
-  <p></p>
+  <p>The visualization helps the veiwer explore how long-term climate shifts relate to short-term disasters.
+     Presenting these datasets together allows us to see if patterns that are not visible when each is viewed individually, 
+     without suggesting a direct relationship. </p>
   <h3>Design Rational</h3>
-  <p></p>
+  <p>We use a stacked bar chart to show the total number of disasters per year while also revealing how different disaster types 
+    contribute to that total. A line chart is overlaid using a secondary y-axis to show CO₂ emissions, providing a continuous trend for comparison. 
+    Disaster types have a distinct categorical color palette, while the CO₂ line is styled in a neutral charcoal with a light shadow so it remains 
+    legible across bars. 
+    Interactive controls like region selection, sorting, and disaster-type filtering aid in the exploratory analysis.</p>
   <h3>Data Transformations</h3>
   <p></p>
   <h3>Development Process</h3>
   <p></p>
+  <h3>Conclusion</h3>
+  <p>Although CO₂ emissions show a steady long-term increase, climate-related disaster counts vary significantly from year to year, 
+    and do not directly track changes in emissions on an annual basis. 
+    This suggests that emissions only influence climate risks over larger time scales,
+     while individual natural disaster events are shaped by shorter term environmental and regional factors.</p>
 </body>
 </html>

@@ -318,6 +318,20 @@
         .attr('cx', d => x(d.year) + x.bandwidth() / 2)
         .attr('cy', d => y2(d.val));
     dots.exit().remove();
+    // Toggle line visibility when sorting by total disasters
+    if (sortMode === 'year') {
+      co2LinePath.style('opacity', 1);
+      co2LineShadow.style('opacity', 1);
+    } else {
+      co2LinePath.style('opacity', 0);
+      co2LineShadow.style('opacity', 0);
+    }
+
+    // Always keep dots visible
+    co2DotsG.raise();
+    co2LinePath.raise();
+    co2LineShadow.raise();
+    y2AxisG.raise();
 
 
 
