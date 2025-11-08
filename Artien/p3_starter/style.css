@@ -47,10 +47,11 @@ button:focus{outline:2px solid #bcd;}
 .tooltip .sparkline{margin-top:8px;border-top:1px dashed #e1e1e6;padding-top:6px;}
 .tooltip .delta{color:#333;margin-top:4px;}
 
-.axis path,.axis line{stroke:#000;shape-rendering:crispEdges;stroke-opacity:.4;}
+.axis path,.axis line{stroke:#4c4c4c;shape-rendering:crispEdges;stroke-opacity:.4;}
 .tick text{font-size:11px;}
 .x-axis .tick text{transform:rotate(-45deg);text-anchor:end;}
 .y-label{font-size:12px;fill:#333;}
+.y2-label{font-size:12.5px;fill:#333;}
 
 .year-group{transition:opacity .12s;}
 .year-group.dim{opacity:.22;}

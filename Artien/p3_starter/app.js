@@ -68,9 +68,9 @@
   const co2LinePath = plot.append('path')
     .attr('class', 'co2-line')
     .attr('fill', 'none')
-    .attr('stroke', '#111')
+    .attr('stroke', '#4f4f4fff')
     .attr('stroke-width', 2)
-    .attr('pointer-events', 'none'); // don't block bar hovers
+    //.attr('pointer-events', 'none'); // don't block bar hovers
 
   const co2DotsG = plot.append('g').attr('class', 'co2-dots');
 
